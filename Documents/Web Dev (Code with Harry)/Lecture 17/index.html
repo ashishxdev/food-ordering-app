@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Element Selector */
+        div{
+            background-color: rgb(255, 0, 0);
+            color: rgb(255, 255, 255);
+        }
+        /* Class Selector */
+        .red {
+            background-color: black;
+            color: yellow;
+        }
+        /* ID Selector */
+        #blue{
+            background-color: greenyellow;
+            color: rgb(0, 0, 0);
+        }
+        /* Child Selector */
+        div > p{
+            background-color: cyan;
+            color: black;
+        }
+        /* Descendant Selector */
+        div p{
+            background-color: cyan;
+            color: black;
+        }
+        /* Universal Selector */
+        *{
+            margin: 0;
+            padding: 10px;
+            font-size: 20px;
+            text-align: center;
+        }
+        /* Pseudo Selector */
+        a:visited {
+            color:rgb(255, 0, 0);
+        }
+        a:link {
+            color: green;
+        }
+        a:active {
+            background-color: cyan;
+        }
+        a:hover /* Similar to active */ {
+            background-color: pink;
+        }
+        /* First child Pseudo Selector */
+        p:first-child {
+            background-color: rgb(34, 216, 222);
+        }
+        /* Nth child Pseudo Selector */
+        p:nth-child(2) {
+            background-color: orangered;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <p> I am first child</p>
+        <p> I am second child</p>
+    </main>
+    <div class>
+        I am first div.
+    </div>
+    <div class="red">
+        I am second div.
+        <p> I am a paragraph under second div</p>
+    </div>
+    <div id="blue">
+        I am third div.
+        <p> I am a paragraph under third div</p>
+    </div>
+    <a target = "_blank" href="//www.google.com">Go to Google</a>
+    <a target = "_blank" href="https://www.facebook.com/">Go to Facebook</a>
+    <a target = "_blank" href="https://www.youtube.com/">Go to Youtube</a>
+    <a target = "_blank" href="https://www.apple.com/">Go to Apple</a>
+</body>
+</html>

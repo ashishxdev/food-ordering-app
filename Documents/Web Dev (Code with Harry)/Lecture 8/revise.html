@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form for revision</title>
+  </head>
+  <body>
+    <h1>Details form</h1>
+    <form action="/submit.php" method="post">
+      <div>
+        <label for="name">Enter your name</label>
+      </div>
+      <div>
+        <input type="text" id="name" placeholder="Enter your name" />
+      </div>
+      <div>
+        <label for="city">Choose your city</label>
+      </div>
+      <div>
+        <select name="Cities">
+          <option value="Delhi">Delhi</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Banglore">Banglore</option>
+        </select>
+      </div>
+      <div>
+        <label for="pincode">Enter your pincode</label>
+      </div>
+      <div>
+        <input type="number" id="pincode" placeholder="Enter your Pincode" />
+      </div>
+      <div>
+        <input type="submit" />
+      </div>
+    </form>
+  </body>
+</html>
