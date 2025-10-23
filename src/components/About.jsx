@@ -25,7 +25,7 @@ class About extends React.Component{
         </UserContext.Consumer>
 
       </div>
-      <h2>This is Namaste React Episode 11</h2>
+      <h2>This is About Page.</h2>
       <UserClass name={"Aashish Rana (class)"} location={"Tehri Garhwal (class)"}/>
     </div>
   )

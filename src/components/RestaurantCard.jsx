@@ -14,8 +14,8 @@ const RestaurantCard = (props) => {
     return (
         <div 
         data-testid = "resCard"
-        className="m-4 w-[240px] bg-white rounded-2xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-            <img className="rounded-t-2xl w-full object-cover p-0" alt="res-logo" src={CDN_URL + resData.info.cloudinaryImageId}/>
+        className="m-4 w-[240px] bg-white rounded-2xl shadow-md hover:shadow-lg hover:bg-gray-200 transition-all duration-300 cursor-pointer">
+            <img className="rounded-t-2xl w-full object-cover p-0 h-[250px]" alt="res-logo" src={CDN_URL + resData.info.cloudinaryImageId}/>
 
             <div className="p-4">
             <h3 className="font-semibold text-lg text-gray-800 truncate">{name}</h3>
@@ -38,7 +38,7 @@ const RestaurantCard = (props) => {
                 <div className="relative group">
                     <span className="absolute top-0 left-4 z-20 bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-md shadow-md tracking-wide">Vegeterian</span>
                     
-                    <div className="transform transition-transform duration-300 group-hover:scale-105">
+                    <div className="transform transition-transform duration-300">
                     <RestaurantCard {...props}/>
                     </div>
                 </div>
