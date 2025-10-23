@@ -2,6 +2,11 @@
 
 A modern, feature-rich food ordering web application inspired by Swiggy. Built with React, Redux Toolkit, and Tailwind CSS, this app provides a seamless experience for browsing restaurants, exploring menus, and managing orders.
 
+## Screenshots
+<img width="1470" height="832" alt="image" src="https://github.com/user-attachments/assets/05e5039f-efc3-479a-bf77-188c88a170f1" />
+<img width="1470" height="831" alt="image" src="https://github.com/user-attachments/assets/1d7897f7-d28d-40ec-aef4-dd82c1e47565" />
+<img width="1470" height="831" alt="image" src="https://github.com/user-attachments/assets/a0fd1122-e958-463a-a598-e45a2ebd75dc" />
+
 ## ✨ Features
 
 ### 🏪 Restaurant Listing
