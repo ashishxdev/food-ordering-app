@@ -32,7 +32,7 @@ A modern, feature-rich food ordering web application inspired by Swiggy. Built w
 - Personalized experience with logged-in username display
 
 ### 🎨 Modern UI/UX
-- Fully responsive design built with Tailwind CSS
+- Built with Tailwind CSS
 - Smooth hover effects, shadows, and transitions
 - Clean and intuitive interface
 
