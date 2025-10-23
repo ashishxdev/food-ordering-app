@@ -10,9 +10,11 @@ import UserContext from "./utils/UserContext";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import Cart from "./components/Cart";
+import About from "./components/About";
+import Grocery from "./components/Grocery";
 
-const Grocery = lazy(()=>import("./components/Grocery"))
-const About = lazy(()=>import("./components/About"))
+// const Grocery = lazy(()=>import("./components/Grocery"))
+// const About = lazy(()=>import("./components/About"))
 
 const AppLayout = () => {
 
@@ -44,11 +46,15 @@ const appRouter = createBrowserRouter([
         path: "/",
         element: <Body/>
         },
+        // {
+        // path: "/about",
+        // element: (<Suspense fallback={<h1>Loading..</h1>}>
+        //     <About/>
+        //     </Suspense>)
+        // },
         {
         path: "/about",
-        element: (<Suspense fallback={<h1>Loading..</h1>}>
-            <About/>
-            </Suspense>)
+        element: <About/>
         },
         {
         path: "/contact",
@@ -56,10 +62,14 @@ const appRouter = createBrowserRouter([
         },
         {
         path: "/grocery",
-        element: (<Suspense fallback={<h1>Loading..</h1>}>
-            <Grocery/>
-            </Suspense>)
+        element: <Grocery/>
         },
+        // {
+        // path: "/grocery",
+        // element: (<Suspense fallback={<h1>Loading..</h1>}>
+        //     <Grocery/>
+        //     </Suspense>)
+        // },
         {
         path: "/restaurants/:resId", 
         element: <RestaurantMenu/>
