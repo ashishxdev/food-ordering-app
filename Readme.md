@@ -124,4 +124,4 @@ src/
 
 ## 🌐 Live Demo
 
-Check out the live application: [**Food Order App on Vercel**]((https://food-ordering-app-git-main-aashishrana2004s-projects.vercel.app/))
+Check out the live application: [**Food Order App on Vercel**](https://food-ordering-app-git-main-aashishrana2004s-projects.vercel.app/)
