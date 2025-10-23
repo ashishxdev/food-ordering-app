@@ -18,7 +18,8 @@ const Body = () => {
     useEffect(()=> {
         const fetchRestaurants = async() => {
         try { 
-        const response = await fetch("/api/restaurants");
+        const response = await fetch("https://corsproxy.io/?" + encodeURIComponent("https://www.swiggy.com/dapi/restaurants/list/v5?lat=21.1458&lng=79.0882&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING")
+);
 
         const json = await response.json();
 
