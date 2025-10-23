@@ -5,10 +5,10 @@ A modern, feature-rich food ordering web application inspired by Swiggy. Built w
 ## ✨ Features
 
 ### 🏪 Restaurant Listing
-- Browse restaurants based on your location
+- Browse restaurants
 - Filter and discover top-rated restaurants
 - Smart search functionality to find restaurants by name
-- Clear veg/non-veg labeling for dietary preferences
+- Clear veg labeling for dietary preferences
 
 ### 📋 Restaurant Menu
 - Explore detailed restaurant-specific menus
@@ -30,10 +30,8 @@ A modern, feature-rich food ordering web application inspired by Swiggy. Built w
 - Fully responsive design built with Tailwind CSS
 - Smooth hover effects, shadows, and transitions
 - Clean and intuitive interface
-- Mobile-first approach
 
 ### 🚀 Performance Optimizations
-- Lazy loading for About and Grocery pages
 - Optimized bundle size for faster load times
 - Efficient state management with Redux Toolkit
 
@@ -122,31 +120,4 @@ src/
 
 ## 🌐 Live Demo
 
-Check out the live application: [**Food Order App on Vercel**](https://your-vercel-url.vercel.app)
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👨‍💻 Author
-
-**Ashish**
-- GitHub: [@ashishxdev](https://github.com/ashishxdev)
-
-## 🙏 Acknowledgments
-
-- Inspired by Swiggy's user interface
-- Built as a learning project to master React and modern web development
-
----
-
-⭐ **Star this repo if you find it helpful!**
+Check out the live application: [**Food Order App on Vercel**]((https://food-ordering-app-git-main-aashishrana2004s-projects.vercel.app/))
