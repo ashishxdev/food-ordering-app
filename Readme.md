@@ -91,6 +91,10 @@ A modern, feature-rich food ordering web application inspired by Swiggy. Built w
    npm run build
    ```
 
+6. CORS Note
+If you’re testing locally, make sure to install the Allow CORS: Access-Control-Allow-Origin Chrome extension and toggle it ON.
+This helps bypass CORS restrictions during local development.
+
 ## 📁 Project Structure
 
 ```
