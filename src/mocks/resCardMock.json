@@ -1,0 +1,86 @@
+{
+    "info": {
+        "id": "151518",
+        "name": "Bakery World",
+        "cloudinaryImageId": "mt2aggiscfl3yviatwng",
+        "locality": "Parasia Road",
+        "areaName": "Parasia Road",
+        "costForTwo": "₹250 for two",
+        "cuisines": [
+            "Bakery",
+            "Ice Cream",
+            "Snacks",
+            "Beverages"
+        ],
+        "avgRating": 4.3,
+        "veg": true,
+        "parentId": "40363",
+        "avgRatingString": "4.3",
+        "totalRatingsString": "296",
+        "sla": {
+            "deliveryTime": 50,
+            "lastMileTravel": 14.1,
+            "serviceability": "SERVICEABLE",
+            "slaString": "45-50 mins",
+            "lastMileTravelString": "14.1 km",
+            "iconType": "ICON_TYPE_EMPTY"
+        },
+        "availability": {
+            "nextCloseTime": "2025-10-21 22:30:00",
+            "opened": true
+        },
+        "badges": {
+            "imageBadges": [
+                {
+                    "imageId": "v1695133679/badges/Pure_Veg111.png",
+                    "description": "pureveg"
+                }
+            ]
+        },
+        "isOpen": true,
+        "type": "F",
+        "badgesV2": {
+            "entityBadges": {
+                "imageBased": {
+                    "badgeObject": [
+                        {
+                            "attributes": {
+                                "description": "pureveg",
+                                "imageId": "v1695133679/badges/Pure_Veg111.png"
+                            }
+                        }
+                    ]
+                },
+                "textBased": {},
+                "textExtendedBadges": {}
+            }
+        },
+        "aggregatedDiscountInfoV3": {
+            "header": "ITEMS",
+            "subHeader": "AT ₹99"
+        },
+        "differentiatedUi": {
+            "displayType": "ADS_UI_DISPLAY_TYPE_ENUM_DEFAULT",
+            "differentiatedUiMediaDetails": {
+                "lottie": {},
+                "video": {}
+            }
+        },
+        "reviewsSummary": {},
+        "displayType": "RESTAURANT_DISPLAY_TYPE_DEFAULT",
+        "restaurantOfferPresentationInfo": {},
+        "externalRatings": {
+            "aggregatedRating": {
+                "rating": "--"
+            }
+        },
+        "ratingsDisplayPreference": "RATINGS_DISPLAY_PREFERENCE_SHOW_SWIGGY"
+    },
+    "analytics": {
+        "context": "seo-data-84507936-59d5-4add-8ffc-67e6929ca500"
+    },
+    "cta": {
+        "link": "https://www.swiggy.com/city/chhindwara/bakery-world-parasia-road-rest151518",
+        "type": "WEBLINK"
+    }
+}
