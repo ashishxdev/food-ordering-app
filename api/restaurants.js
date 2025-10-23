@@ -1,6 +1,4 @@
 // /api/restaurants.js
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
   try {
     const response = await fetch(
@@ -8,14 +6,19 @@ export default async function handler(req, res) {
       {
         headers: {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+          Accept: "application/json",
         },
       }
     );
 
+    if (!response.ok) {
+      throw new Error(`Swiggy API returned ${response.status}`);
+    }
+
     const data = await response.json();
     res.status(200).json(data);
   } catch (err) {
-    console.error("API Error:", err);
-    res.status(500).json({ error: "Failed to fetch restaurants" });
+    console.error("API Error:", err.message);
+    res.status(500).json({ error: "Failed to fetch restaurants", details: err.message });
   }
 }
