@@ -6,7 +6,6 @@ const User = ({name}) =>{
     const [count2] = useState(1);
 
     useEffect(()=>{
-        // Api Calls
     },[])
     
     return (

@@ -1,4 +1,4 @@
-import { CDN_URL } from "../utils/constant"; // how to import named exports
+import { CDN_URL } from "../utils/constant"; 
 import UserContext from "../utils/UserContext";
 import { useContext } from "react";
 
@@ -8,8 +8,8 @@ const RestaurantCard = (props) => {
 
     const {loggedInUser} = useContext(UserContext)
 
-    const {name,cuisines,avgRating,costForTwo,} = resData?.info; // Optional Chaining
-    const {deliveryTime} = resData?.info.sla; // Optional Chaining
+    const {name,cuisines,avgRating,costForTwo,} = resData?.info;
+    const {deliveryTime} = resData?.info.sla;
 
     return (
         <div 

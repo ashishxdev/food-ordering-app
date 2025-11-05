@@ -26,7 +26,6 @@ class UserClass extends React.Component{
         // console.log("Component did Update")
     }
 
-    // when i move to another page
     componentWillUnmount(){
         // console.log("Component did unmount")
     }

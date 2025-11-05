@@ -5,7 +5,6 @@ import { act } from "react"
 import { BrowserRouter } from "react-router-dom"
 import "@testing-library/jest-dom"
 
-// We are making this function similar to fetch function which browser gives us
 global.fetch = jest.fn(()=>{
     return Promise.resolve({
         json: () => {
@@ -35,7 +34,6 @@ it("Should Search Res List for Burger Text Input", async () => {
 
     fireEvent.click(searchBtn);
 
-    // screen should load 4 res cards
     const cardsAfterSearch = screen.getAllByTestId("resCard")
 
     expect(cardsAfterSearch.length).toBe(2);

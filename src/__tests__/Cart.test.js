@@ -7,7 +7,7 @@ import appStore from "../utils/appStore"
 import Header from "../components/Header"
 import Cart from "../components/Cart"
 import { BrowserRouter } from "react-router-dom"
-import "@testing-library/jest-dom" // For toBeInTheDocument
+import "@testing-library/jest-dom" 
 
 it("Should load Restaurant Menu component", async()=>{
 
@@ -44,7 +44,7 @@ it("Should load Restaurant Menu component", async()=>{
     fireEvent.click(addBtns[1])
     expect(screen.getByText("(2) Cart 🛒")).toBeInTheDocument()
 
-    expect(screen.getAllByTestId("foodItems").length).toBe(7) // 5 + 2
+    expect(screen.getAllByTestId("foodItems").length).toBe(7) 
 
     fireEvent.click(screen.getByRole("button", { name: "Clear Cart" }))
 

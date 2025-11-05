@@ -16,7 +16,6 @@ const Header = () => {
     useEffect(()=>{
     }, [btnNameReact]);
 
-    // Subscribing to the store using a Selector 
     const cartItems = useSelector((store) => store.cart.items)
 
     return (

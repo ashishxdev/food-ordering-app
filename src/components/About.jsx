@@ -19,7 +19,6 @@ class About extends React.Component{
       <div>
         LoggedIn User
 
-        {/* This is a component */}
         <UserContext.Consumer>
           {({loggedInUser}) => <h1>{loggedInUser}</h1>}
         </UserContext.Consumer>

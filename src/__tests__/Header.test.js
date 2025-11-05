@@ -14,7 +14,7 @@ it("Should render Header Component with a login button", () =>{
     </BrowserRouter>
     )
 
-    const loginButton = screen.getByRole("button", { name: "Login" }) // If we have more buttons
+    const loginButton = screen.getByRole("button", { name: "Login" }) 
     // const loginButton = screen.getByText("Login")
 
     expect(loginButton).toBeInTheDocument();
@@ -43,7 +43,7 @@ it("Should render Header Component with Cart Item ", () =>{
     </BrowserRouter>
     )
 
-    const cartItems = screen.getByText(/Cart/) // /Cart/ is a regex
+    const cartItems = screen.getByText(/Cart/)
 
     expect(cartItems).toBeInTheDocument();
 })

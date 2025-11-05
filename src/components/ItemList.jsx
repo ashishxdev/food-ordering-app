@@ -7,7 +7,6 @@ const ItemList = ({items, dummy}) => {
 
   const dispatch = useDispatch()
   const handleAddItem = (item) => {
-      // Dispatch an action
       dispatch(addItem(item))
   }
 

@@ -7,10 +7,7 @@ const cartSlice = createSlice({
         items: []
     },
     reducers: {
-        // addItem, removeItem & clearItem are reducer functions
         addItem: (state, action) =>{
-            // mutating the state here (directly modifying our state here)
-            // uses immer behind the scenes
             state.items.push(action.payload);
         },
         removeItem: (state) =>{
