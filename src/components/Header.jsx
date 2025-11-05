@@ -30,9 +30,6 @@ const Header = () => {
                   "https://placehold.co/96x96/fe9801/white?text=ProFood";
               }}
             />
-            <span className="ml-2 text-xl sm:text-2xl font-bold text-orange-600 hidden sm:inline">
-              ProFood
-            </span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-6">
