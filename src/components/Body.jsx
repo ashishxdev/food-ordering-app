@@ -249,56 +249,63 @@ const Body = () => {
     }, [location]);
 
     const fetchRestaurants = async(offset = null) => {
-        try {
-            setIsLoading(true);
-            
-            // Build URL with optional offset
-            let url = `/api/swiggy?lat=${location.lat}&lng=${location.lng}`;
-            if (offset) {
-                url += `&nextOffset=${offset}`;
-            }
-            
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch restaurants');
-            }
-
-            const json = await response.json();
-
-            // Extract restaurants
-            const restaurantsCard = json?.data?.cards?.find((item) => 
-                item?.card?.card?.id?.includes("restaurant_grid_listing")
-            );
-            
-            const newRestaurants = restaurantsCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-            
-            // Extract next offset for pagination
-            const paginationCard = json?.data?.cards?.find((item) => 
-                item?.card?.card?.id === "restaurant_grid_listing"
-            );
-            const newNextOffset = paginationCard?.card?.card?.gridElements?.nextOffset;
-            
-            if (offset) {
-                // Append new restaurants to existing ones
-                setlistofRestaurants(prev => [...prev, ...newRestaurants]);
-                setFilteredRestaurants(prev => [...prev, ...newRestaurants]);
-            } else {
-                // Initial load - replace all
-                setlistofRestaurants(newRestaurants);
-                setFilteredRestaurants(newRestaurants);
-            }
-            
-            // Update pagination state
-            setNextOffset(newNextOffset);
-            setHasMore(!!newNextOffset && newRestaurants.length > 0);
-            setIsLoading(false);
-        } catch (err) {
-            console.error('Error fetching restaurants:', err);
-            setIsLoading(false);
-            setHasMore(false);
+    try {
+        setIsLoading(true);
+        
+        let url = `/api/swiggy?lat=${location.lat}&lng=${location.lng}`;
+        if (offset) {
+            url += `&nextOffset=${offset}`;
         }
-    };
+        
+        console.log("🔍 Fetching from:", url); // DEBUG
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Failed to fetch restaurants');
+        }
+
+        const json = await response.json();
+        console.log("📦 Full API Response:", json); // DEBUG - See everything
+        console.log("📦 All Cards:", json?.data?.cards); // DEBUG - See all cards
+
+        // Find restaurant card
+        const restaurantsCard = json?.data?.cards?.find((item) => 
+            item?.card?.card?.id?.includes("restaurant_grid_listing")
+        );
+        
+        console.log("🍽️ Restaurant Card:", restaurantsCard); // DEBUG
+        
+        const newRestaurants = restaurantsCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+        console.log("✅ New Restaurants Count:", newRestaurants.length); // DEBUG
+        console.log("✅ Restaurant IDs:", newRestaurants.map(r => r.info.id)); // DEBUG
+        
+        // Try to find nextOffset
+        console.log("🔄 Looking for nextOffset in:", restaurantsCard?.card?.card); // DEBUG
+        const newNextOffset = restaurantsCard?.card?.card?.nextOffset;
+        console.log("🔄 Next Offset:", newNextOffset); // DEBUG
+        
+        if (offset) {
+            setlistofRestaurants(prev => {
+                console.log("📝 Previous count:", prev.length); // DEBUG
+                const combined = [...prev, ...newRestaurants];
+                console.log("📝 New count:", combined.length); // DEBUG
+                return combined;
+            });
+            setFilteredRestaurants(prev => [...prev, ...newRestaurants]);
+        } else {
+            setlistofRestaurants(newRestaurants);
+            setFilteredRestaurants(newRestaurants);
+        }
+        
+        setNextOffset(newNextOffset);
+        setHasMore(!!newNextOffset && newRestaurants.length > 0);
+        setIsLoading(false);
+    } catch (err) {
+        console.error('❌ Error fetching restaurants:', err);
+        setIsLoading(false);
+        setHasMore(false);
+    }
+};
 
     // ✅ Load More function - now with real pagination
     const loadMoreRestaurants = () => {
