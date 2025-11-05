@@ -205,7 +205,7 @@ const Body = () => {
 
     const hasMoreToLoad = currentBatchIndex < sortOptions.length - 1;
 
-    return listofRestaurants.length == 0 && isLoading ? <Shimmer /> : (
+    return listofRestaurants.length == 0 && isLoading ? <Shimmer variant="cards" count={8} /> : (
         <div className="body px-3 sm:px-6 py-3 bg-gray-50 min-h-screen">
             <div className="filter grid grid-cols-1 md:flex md:flex-row md:flex-wrap gap-2 sm:gap-3 justify-between items-stretch md:items-center bg-white shadow-md rounded-xl px-3 sm:px-4 py-3 m-0 mb-4">
                 
@@ -247,7 +247,7 @@ const Body = () => {
 
                 <div className="search m-0 md:m-2">
                     <button 
-                        className="px-3 py-2 h-10 text-sm sm:text-base bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition-colors duration-200 flex items-center gap-2 w-full sm:w-auto justify-center"
+                        className="px-3 py-2 h-10 text-sm sm:text-base bg-green-200 text-dark-green font-medium rounded-lg hover:bg-green-600 transition-colors duration-200 flex items-center gap-2 w-full sm:w-auto justify-center"
                         onClick={useCurrentLocation}
                         disabled={isSearchingLocation}
                     >
@@ -312,7 +312,7 @@ const Body = () => {
                 ))}
             </div>
 
-            {isLoading && <div className="mt-3"><Shimmer /></div>}
+            {isLoading && <div className="mt-3"><Shimmer variant="cards" count={4} /></div>}
 
             {hasMoreToLoad && !isLoading && FilteredRestaurants.length > 0 && (
                 <div className="text-center mt-6 sm:mt-8 mb-4">

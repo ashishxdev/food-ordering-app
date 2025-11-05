@@ -14,7 +14,7 @@ const RestaurantMenu = () => {
     const [showIndex, setshowIndex] = useState(null)
     
     if (resinfo === null) {
-        return <Shimmer />;
+        return <Shimmer variant="menu" />;
     }
     const { name, cuisines, costForTwoMessage } = resinfo?.cards[2]?.card?.card?.info;
     const { itemCards } = resinfo?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1].card.card;

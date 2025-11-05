@@ -32,7 +32,7 @@ const Cart = () => {
           )}
         </div>
         {isCartLoading ? (
-          <div className='mt-3 sm:mt-4'><Shimmer /></div>
+          <div className='mt-3 sm:mt-4'><Shimmer variant='cart' /></div>
         ) : cartItems.length == 0 ? (
           <h2 className='mt-3 sm:mt-4 text-gray-700'>Cart is empty. Add items to the cart!</h2>
         ) : null}
