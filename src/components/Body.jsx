@@ -312,7 +312,7 @@ const Body = () => {
                 ))}
             </div>
 
-            {isLoading && <Shimmer />}
+            {isLoading && <div className="mt-3"><Shimmer /></div>}
 
             {hasMoreToLoad && !isLoading && FilteredRestaurants.length > 0 && (
                 <div className="text-center mt-6 sm:mt-8 mb-4">
