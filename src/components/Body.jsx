@@ -221,8 +221,7 @@ const Body = () => {
     const [FilteredRestaurants, setFilteredRestaurants] = useState([]);
     const [searchtext, setsearchText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [nextOffset, setNextOffset] = useState(null); // ✅ Track pagination offset
-    const [hasMore, setHasMore] = useState(true); // ✅ Track if more data available
+    const [currentBatchIndex, setCurrentBatchIndex] = useState(0);
     
     const [location, setLocation] = useState({ lat: 21.1458, lng: 79.0882, name: "Nagpur" });
     
@@ -237,80 +236,79 @@ const Body = () => {
         { lat: 23.0225, lng: 72.5714, name: "Ahmedabad" },
     ];
 
+    // Different sorting options to get variety
+    const sortOptions = [
+        '', // Default
+        'RELEVANCE',
+        'DELIVERY_TIME',
+        'RATING',
+        'COST_FOR_TWO',
+    ];
+
     const RestaurantCardVeg = withVegLabel(RestaurantCard);
 
     useEffect(() => {
-        // Reset when location changes
         setlistofRestaurants([]);
         setFilteredRestaurants([]);
-        setNextOffset(null);
-        setHasMore(true);
+        setCurrentBatchIndex(0);
         fetchRestaurants();
     }, [location]);
 
-    const fetchRestaurants = async(offset = null) => {
-    try {
-        setIsLoading(true);
-        
-        let url = `/api/swiggy?lat=${location.lat}&lng=${location.lng}`;
-        if (offset) {
-            url += `&nextOffset=${offset}`;
-        }
-        
-        console.log("🔍 Fetching from:", url); // DEBUG
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Failed to fetch restaurants');
-        }
+    const fetchRestaurants = async(batchIndex = 0) => {
+        try {
+            setIsLoading(true);
+            
+            // Fetch with different sort to get variety
+            const sortBy = sortOptions[batchIndex] || '';
+            let url = `/api/swiggy?lat=${location.lat}&lng=${location.lng}`;
+            if (sortBy) {
+                url += `&sortBy=${sortBy}`;
+            }
+            
+            const response = await fetch(url);
 
-        const json = await response.json();
-        console.log("📦 Full API Response:", json); // DEBUG - See everything
-        console.log("📦 All Cards:", json?.data?.cards); // DEBUG - See all cards
+            if (!response.ok) {
+                throw new Error('Failed to fetch restaurants');
+            }
 
-        // Find restaurant card
-        const restaurantsCard = json?.data?.cards?.find((item) => 
-            item?.card?.card?.id?.includes("restaurant_grid_listing")
-        );
-        
-        console.log("🍽️ Restaurant Card:", restaurantsCard); // DEBUG
-        
-        const newRestaurants = restaurantsCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-        console.log("✅ New Restaurants Count:", newRestaurants.length); // DEBUG
-        console.log("✅ Restaurant IDs:", newRestaurants.map(r => r.info.id)); // DEBUG
-        
-        // Try to find nextOffset
-        console.log("🔄 Looking for nextOffset in:", restaurantsCard?.card?.card); // DEBUG
-        const newNextOffset = restaurantsCard?.card?.card?.nextOffset;
-        console.log("🔄 Next Offset:", newNextOffset); // DEBUG
-        
-        if (offset) {
-            setlistofRestaurants(prev => {
-                console.log("📝 Previous count:", prev.length); // DEBUG
-                const combined = [...prev, ...newRestaurants];
-                console.log("📝 New count:", combined.length); // DEBUG
-                return combined;
-            });
-            setFilteredRestaurants(prev => [...prev, ...newRestaurants]);
-        } else {
-            setlistofRestaurants(newRestaurants);
-            setFilteredRestaurants(newRestaurants);
+            const json = await response.json();
+
+            const restaurantsCard = json?.data?.cards?.find((item) => 
+                item?.card?.card?.id?.includes("restaurant_grid_listing")
+            );
+            
+            const newRestaurants = restaurantsCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+            
+            if (batchIndex === 0) {
+                // First load
+                setlistofRestaurants(newRestaurants);
+                setFilteredRestaurants(newRestaurants);
+            } else {
+                // Load more - remove duplicates
+                setlistofRestaurants(prev => {
+                    const existingIds = new Set(prev.map(r => r.info.id));
+                    const uniqueNew = newRestaurants.filter(r => !existingIds.has(r.info.id));
+                    return [...prev, ...uniqueNew];
+                });
+                setFilteredRestaurants(prev => {
+                    const existingIds = new Set(prev.map(r => r.info.id));
+                    const uniqueNew = newRestaurants.filter(r => !existingIds.has(r.info.id));
+                    return [...prev, ...uniqueNew];
+                });
+            }
+            
+            setIsLoading(false);
+        } catch (err) {
+            console.error('Error fetching restaurants:', err);
+            setIsLoading(false);
         }
-        
-        setNextOffset(newNextOffset);
-        setHasMore(!!newNextOffset && newRestaurants.length > 0);
-        setIsLoading(false);
-    } catch (err) {
-        console.error('❌ Error fetching restaurants:', err);
-        setIsLoading(false);
-        setHasMore(false);
-    }
-};
+    };
 
-    // ✅ Load More function - now with real pagination
     const loadMoreRestaurants = () => {
-        if (nextOffset && !isLoading) {
-            fetchRestaurants(nextOffset);
+        const nextBatch = currentBatchIndex + 1;
+        if (nextBatch < sortOptions.length) {
+            setCurrentBatchIndex(nextBatch);
+            fetchRestaurants(nextBatch);
         }
     };
 
@@ -324,6 +322,8 @@ const Body = () => {
         );
 
     const { loggedInUser, setuserName } = useContext(UserContext);
+
+    const hasMoreToLoad = currentBatchIndex < sortOptions.length - 1;
 
     return listofRestaurants.length == 0 && isLoading ? <Shimmer /> : (
         <div className="body px-6 py-4 bg-gray-50 min-h-screen">
@@ -406,11 +406,11 @@ const Body = () => {
                 ))}
             </div>
 
-            {/* Loading shimmer when fetching more */}
+            {/* Loading shimmer */}
             {isLoading && <Shimmer />}
 
-            {/* Load More Button - only show if there's more data */}
-            {hasMore && !isLoading && FilteredRestaurants.length > 0 && (
+            {/* Load More Button */}
+            {hasMoreToLoad && !isLoading && FilteredRestaurants.length > 0 && (
                 <div className="text-center mt-8 mb-4">
                     <button 
                         className="px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-md"
@@ -424,11 +424,14 @@ const Body = () => {
                 </div>
             )}
 
-            {/* No more restaurants message */}
-            {!hasMore && FilteredRestaurants.length > 0 && (
+            {/* End message */}
+            {!hasMoreToLoad && FilteredRestaurants.length > 0 && !isLoading && (
                 <div className="text-center mt-8 mb-4">
                     <p className="text-gray-600 font-medium">
-                        🎉 You've seen all restaurants in {location.name}!
+                        ✨ Showing all available restaurants in {location.name}
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Try changing location to see more restaurants
                     </p>
                 </div>
             )}

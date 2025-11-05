@@ -45,19 +45,25 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  const { lat, lng, nextOffset } = req.query;
+  const { lat, lng, sortBy, cuisineId, offset } = req.query;
   
   if (!lat || !lng) {
     return res.status(400).json({ error: 'Missing lat or lng parameters' });
   }
 
   try {
-    // Build URL with or without nextOffset
+    // Build URL with optional filters
     let url = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
     
-    // Add nextOffset if provided (for pagination)
-    if (nextOffset) {
-      url += `&nextOffset=${nextOffset}`;
+    // Add sorting/filtering
+    if (sortBy) {
+      url += `&sortBy=${sortBy}`;
+    }
+    if (cuisineId) {
+      url += `&cuisineId=${cuisineId}`;
+    }
+    if (offset) {
+      url += `&offset=${offset}`;
     }
     
     const response = await fetch(url, {
