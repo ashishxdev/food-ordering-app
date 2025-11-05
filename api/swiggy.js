@@ -1,29 +1,16 @@
-// export default async function handler(req, res) {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-//   if (req.method === 'OPTIONS') {
-//     return res.status(200).end();
-//   }
-
-//   const { lat, lng, sortBy, cuisineId, offset } = req.query;
-  
-//   if (!lat || !lng) {
-//     return res.status(400).json({ error: 'Missing lat or lng parameters' });
-//   }
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
-  // --- ADD THIS LINE ---
-  // This tells the CDN to not cache this response
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  // ---------------------
-
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  const { lat, lng, sortBy, cuisineId, offset } = req.query;
+  
+  if (!lat || !lng) {
+    return res.status(400).json({ error: 'Missing lat or lng parameters' });
   }
 
   try {
