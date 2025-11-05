@@ -221,11 +221,11 @@ const Body = () => {
     const [FilteredRestaurants, setFilteredRestaurants] = useState([]);
     const [searchtext, setsearchText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [nextOffset, setNextOffset] = useState(null); // ✅ Track pagination offset
+    const [hasMore, setHasMore] = useState(true); // ✅ Track if more data available
     
-    // ✅ OPTION 2: Location state
     const [location, setLocation] = useState({ lat: 21.1458, lng: 79.0882, name: "Nagpur" });
     
-    // Predefined locations
     const locations = [
         { lat: 21.1458, lng: 79.0882, name: "Nagpur" },
         { lat: 28.7041, lng: 77.1025, name: "Delhi" },
@@ -239,16 +239,26 @@ const Body = () => {
 
     const RestaurantCardVeg = withVegLabel(RestaurantCard);
 
-    // Fetch restaurants whenever location changes
     useEffect(() => {
+        // Reset when location changes
+        setlistofRestaurants([]);
+        setFilteredRestaurants([]);
+        setNextOffset(null);
+        setHasMore(true);
         fetchRestaurants();
-    }, [location]); // ✅ Re-fetch when location changes
+    }, [location]);
 
-    const fetchRestaurants = async() => {
+    const fetchRestaurants = async(offset = null) => {
         try {
             setIsLoading(true);
-            // ✅ Use dynamic location
-            const response = await fetch(`/api/swiggy?lat=${location.lat}&lng=${location.lng}`);
+            
+            // Build URL with optional offset
+            let url = `/api/swiggy?lat=${location.lat}&lng=${location.lng}`;
+            if (offset) {
+                url += `&nextOffset=${offset}`;
+            }
+            
+            const response = await fetch(url);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch restaurants');
@@ -256,24 +266,45 @@ const Body = () => {
 
             const json = await response.json();
 
-            const restaurants = json?.data?.cards?.find((item) => 
-                item?.card?.card?.id?.includes("restaurant_grid_listing_v2")
-            )?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+            // Extract restaurants
+            const restaurantsCard = json?.data?.cards?.find((item) => 
+                item?.card?.card?.id?.includes("restaurant_grid_listing")
+            );
             
-            setlistofRestaurants(restaurants);
-            setFilteredRestaurants(restaurants);
+            const newRestaurants = restaurantsCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+            
+            // Extract next offset for pagination
+            const paginationCard = json?.data?.cards?.find((item) => 
+                item?.card?.card?.id === "restaurant_grid_listing"
+            );
+            const newNextOffset = paginationCard?.card?.card?.gridElements?.nextOffset;
+            
+            if (offset) {
+                // Append new restaurants to existing ones
+                setlistofRestaurants(prev => [...prev, ...newRestaurants]);
+                setFilteredRestaurants(prev => [...prev, ...newRestaurants]);
+            } else {
+                // Initial load - replace all
+                setlistofRestaurants(newRestaurants);
+                setFilteredRestaurants(newRestaurants);
+            }
+            
+            // Update pagination state
+            setNextOffset(newNextOffset);
+            setHasMore(!!newNextOffset && newRestaurants.length > 0);
             setIsLoading(false);
         } catch (err) {
             console.error('Error fetching restaurants:', err);
             setIsLoading(false);
+            setHasMore(false);
         }
     };
 
-    // ✅ OPTION 3: Load More function
+    // ✅ Load More function - now with real pagination
     const loadMoreRestaurants = () => {
-        // Duplicate existing restaurants (for demo)
-        // In production, you'd fetch next page from API
-        setFilteredRestaurants(prev => [...prev, ...listofRestaurants]);
+        if (nextOffset && !isLoading) {
+            fetchRestaurants(nextOffset);
+        }
     };
 
     const onlinestatus = useOnlineStatus();
@@ -291,7 +322,6 @@ const Body = () => {
         <div className="body px-6 py-4 bg-gray-50 min-h-screen">
             <div className="filter flex flex-wrap justify-between items-center bg-white shadow-md rounded-xl px-4 py-0 m-0 mb-6">
                 
-                {/* ✅ OPTION 2: Location Dropdown - ADD HERE */}
                 <div className="search m-2 flex items-center gap-2">
                     <label className="font-medium text-gray-700">📍 Location: </label>
                     <select 
@@ -321,8 +351,6 @@ const Body = () => {
                     <button 
                         className="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200"
                         onClick={() => {
-                            console.log(searchtext);
-
                             const filteredResto = listofRestaurants.filter((res) => {
                                 return res.info.name.toLowerCase().includes(searchtext.toLowerCase());
                             });
@@ -371,16 +399,30 @@ const Body = () => {
                 ))}
             </div>
 
-            {/* ✅ OPTION 3: Load More Button - ADD HERE (at the bottom) */}
-            {FilteredRestaurants.length > 0 && (
-                <div className="text-center mt-8">
+            {/* Loading shimmer when fetching more */}
+            {isLoading && <Shimmer />}
+
+            {/* Load More Button - only show if there's more data */}
+            {hasMore && !isLoading && FilteredRestaurants.length > 0 && (
+                <div className="text-center mt-8 mb-4">
                     <button 
                         className="px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-md"
                         onClick={loadMoreRestaurants}
-                        disabled={isLoading}
                     >
-                        {isLoading ? 'Loading...' : 'Load More Restaurants 🍽️'}
+                        Load More Restaurants 🍽️
                     </button>
+                    <p className="text-sm text-gray-500 mt-2">
+                        Showing {FilteredRestaurants.length} restaurants
+                    </p>
+                </div>
+            )}
+
+            {/* No more restaurants message */}
+            {!hasMore && FilteredRestaurants.length > 0 && (
+                <div className="text-center mt-8 mb-4">
+                    <p className="text-gray-600 font-medium">
+                        🎉 You've seen all restaurants in {location.name}!
+                    </p>
                 </div>
             )}
         </div>
