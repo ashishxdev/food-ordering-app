@@ -31,7 +31,6 @@ const RestaurantCard = (props) => {
         </div>
     )
 }
-
     export const withVegLabel = (RestaurantCard) =>{
         return (props)=>{
             return (
