@@ -215,13 +215,13 @@ const Body = () => {
     const hasMoreToLoad = currentBatchIndex < sortOptions.length - 1;
 
     return listofRestaurants.length == 0 && isLoading ? <Shimmer /> : (
-        <div className="body px-4 sm:px-6 py-4 bg-gray-50 min-h-screen">
-            <div className="filter flex flex-col md:flex-row md:flex-wrap gap-3 md:gap-2 justify-between items-stretch md:items-center bg-white shadow-md rounded-xl px-3 sm:px-4 py-3 m-0 mb-6">
+        <div className="body px-3 sm:px-6 py-3 bg-gray-50 min-h-screen">
+            <div className="filter grid grid-cols-1 md:flex md:flex-row md:flex-wrap gap-2 sm:gap-3 justify-between items-stretch md:items-center bg-white shadow-md rounded-xl px-3 sm:px-4 py-3 m-0 mb-4">
                 
-                <div className="search m-0 md:m-2 flex items-center gap-2">
-                    <label className="font-medium text-gray-700">📍 Popular: </label>
+                <div className="search m-0 md:m-2 flex items-center gap-2 text-sm sm:text-base">
+                    <label className="font-medium text-gray-700 shrink-0">📍 Popular: </label>
                     <select 
-                        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 w-full sm:w-auto"
+                        className="border border-gray-300 rounded-lg px-3 py-2 h-10 focus:outline-none focus:ring-2 focus:ring-orange-400 w-full sm:w-auto"
                         value={popularLocations.findIndex(loc => loc.name === location.name)}
                         onChange={(e) => {
                             const selected = popularLocations[e.target.value];
@@ -234,11 +234,11 @@ const Body = () => {
                     </select>
                 </div>
 
-                <div className="search m-0 md:m-2 flex items-center gap-2">
+                <div className="search m-0 md:m-2 flex items-center gap-2 text-sm sm:text-base">
                     <input 
                         type="text" 
                         placeholder="Enter any city..."
-                        className="border border-gray-300 rounded-lg px-3 py-2 w-full sm:w-48 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="border border-gray-300 rounded-lg px-3 py-2 h-10 w-full sm:w-56 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         value={customCity}
                         onChange={(e) => setCustomCity(e.target.value)}
                         onKeyPress={(e) => {
@@ -246,7 +246,7 @@ const Body = () => {
                         }}
                     />
                     <button 
-                        className="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200 w-auto"
+                        className="px-3 py-2 h-10 text-sm sm:text-base bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200 w-auto"
                         onClick={searchCustomLocation}
                         disabled={isSearchingLocation}
                     >
@@ -256,7 +256,7 @@ const Body = () => {
 
                 <div className="search m-0 md:m-2">
                     <button 
-                        className="px-4 py-2 bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition-colors duration-200 flex items-center gap-2"
+                        className="px-3 py-2 h-10 text-sm sm:text-base bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition-colors duration-200 flex items-center gap-2 w-full sm:w-auto justify-center"
                         onClick={useCurrentLocation}
                         disabled={isSearchingLocation}
                     >
@@ -264,19 +264,19 @@ const Body = () => {
                     </button>
                 </div>
 
-                <div className="search flex items-center gap-2 m-0 md:m-2">
+                <div className="search flex items-center gap-2 m-0 md:m-2 text-sm sm:text-base">
                     <input 
                         type="text" 
                         data-testid="searchInput"
                         placeholder="Search restaurants..."
-                        className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                        className="border border-gray-300 rounded-lg px-3 py-2 h-10 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-orange-400" 
                         value={searchtext}
                         onChange={(e) => {
                             setsearchText(e.target.value);
                         }}
                     />
                     <button 
-                        className="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200"
+                        className="px-3 py-2 h-10 text-sm sm:text-base bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200 w-auto"
                         onClick={() => {
                             const filteredResto = listofRestaurants.filter((res) => {
                                 return res.info.name.toLowerCase().includes(searchtext.toLowerCase());
@@ -288,9 +288,9 @@ const Body = () => {
                     </button>
                 </div>
 
-                <div className="search m-2 flex items-center">
+                <div className="search m-0 md:m-2 flex items-center">
                     <button 
-                        className="px-4 py-2 bg-green-100 text-green-700 font-medium rounded-lg hover:bg-green-200 transition-colors duration-200"
+                        className="px-3 py-2 h-10 text-sm sm:text-base bg-green-100 text-green-700 font-medium rounded-lg hover:bg-green-200 transition-colors duration-200 w-full sm:w-auto"
                         onClick={() => {
                             const filteredLists = listofRestaurants.filter(
                                 (res) => res.info.avgRating > 4.0
@@ -309,7 +309,7 @@ const Body = () => {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
                 {FilteredRestaurants.map((restaurant) => (
                     <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id} className="block h-full">
                         {restaurant.info.veg ? (
@@ -324,9 +324,9 @@ const Body = () => {
             {isLoading && <Shimmer />}
 
             {hasMoreToLoad && !isLoading && FilteredRestaurants.length > 0 && (
-                <div className="text-center mt-8 mb-4">
+                <div className="text-center mt-6 sm:mt-8 mb-4">
                     <button 
-                        className="px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-md"
+                        className="px-4 sm:px-8 py-2 sm:py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors duration-200 shadow-md w-full sm:w-auto"
                         onClick={loadMoreRestaurants}
                     >
                         Load More Restaurants 🍽️
