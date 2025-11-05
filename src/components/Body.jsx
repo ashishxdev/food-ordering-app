@@ -151,7 +151,6 @@ const Body = () => {
             </h1>
         );
 
-    const { loggedInUser, setuserName } = useContext(UserContext);
     const hasMoreToLoad = currentBatchIndex < sortOptions.length - 1;
 
     return listofRestaurants.length == 0 && isLoading ? <Shimmer /> : (
@@ -240,16 +239,6 @@ const Body = () => {
                     >
                         Top Rated Restaurants
                     </button>
-                </div>
-
-                <div className="search m-2 flex items-center gap-2">
-                    <label className="font-medium text-gray-700">Username: </label>
-                    <input 
-                        type="text" 
-                        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" 
-                        value={loggedInUser}
-                        onChange={(e) => setuserName(e.target.value)}
-                    />
                 </div>
             </div>
 
