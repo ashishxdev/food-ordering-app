@@ -13,15 +13,22 @@ const Cart = () => {
     }
 
   return (
-    <div className='text-center p-4 m-4'>
-      <h1 className='text-2xl font-bold'>Cart</h1>
-        <div className='w-6/12 m-auto'>
-        <button className='p-2 m-2 bg-black text-white rounded-lg'
-        onClick={handleClearCart}
-        >Clear Cart</button>
+    <div className='text-center px-3 sm:px-4 py-4 m-0 sm:m-4'>
+      <h1 className='text-2xl font-bold mb-3 sm:mb-4'>Cart</h1>
+        <div className='w-full max-w-2xl sm:max-w-3xl m-auto text-left'>
+        <div className='flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between'>
+          <button className='p-2 sm:px-4 sm:py-2 bg-black text-white rounded-lg w-full sm:w-auto'
+          onClick={handleClearCart}
+          >Clear Cart</button>
+          {cartItems.length > 0 && (
+            <div className='text-sm text-gray-600'>Items: <span className='font-semibold'>{cartItems.length}</span></div>
+          )}
+        </div>
         {cartItems.length == 0 && 
-        <h1> Cart is empty. Add Items to the cart!</h1>}
-        <ItemList items={cartItems}/>
+        <h2 className='mt-3 sm:mt-4 text-gray-700'>Cart is empty. Add items to the cart!</h2>}
+        <div className='mt-3 sm:mt-4'>
+          <ItemList items={cartItems}/>
+        </div>
         </div>
     </div>
   )

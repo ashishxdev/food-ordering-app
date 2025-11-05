@@ -1,37 +1,3 @@
-// import React from 'react'
-// import { Component } from 'react'
-// import User from './User'
-// import UserClass from './UserClass'
-// import UserContext from '../utils/UserContext'
-
-// class About extends React.Component{
-//   constructor(props){
-//     super(props);
-//   }
-
-//   componentDidMount(){
-//   }
-
-//   render(){
-//     return (
-//     <div>
-//       <h1>About</h1>
-//       <div>
-//         LoggedIn User
-
-//         <UserContext.Consumer>
-//           {({loggedInUser}) => <h1>{loggedInUser}</h1>}
-//         </UserContext.Consumer>
-
-//       </div>
-//       <h2>This is About Page.</h2>
-//       <UserClass name={"Aashish Rana (class)"} location={"Tehri Garhwal (class)"}/>
-//     </div>
-//   )
-//   }
-// }
-
-// export default About
 import React from 'react'
 import { Component } from 'react'
 import UserContext from '../utils/UserContext'
@@ -50,27 +16,17 @@ class About extends React.Component{
     return (
       <div className="min-h-screen bg-orange-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          
-          {/* Header Section */}
           <div className="text-center mb-8 sm:mb-12">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
               About <span className="text-orange-600">Me</span>
             </h1>
             <p className="text-gray-600 text-base sm:text-lg px-4"> Web Developer | Problem Solver</p>
           </div>
-
-          {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 sm:mb-12">
-            
-            {/* User Profile Card - Takes UserClass component */}
             <div className="lg:col-span-1">
               <UserClass name={"Aashish Rana"} location={"Delhi, India"} />
             </div>
-
-            {/* Project Info Section */}
             <div className="lg:col-span-2 space-y-6">
-              
-              {/* About ProFood Card */}
               <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 hover:shadow-2xl transition-shadow duration-300">
                 <div className="flex items-center gap-3 mb-4">
                   <div>
@@ -78,20 +34,16 @@ class About extends React.Component{
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-800">About ProFood</h3>
                 </div>
-                
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
                   ProFood is a personal project I built to master <span className="font-semibold text-orange-600">React</span>, 
                   <span className="font-semibold text-orange-600"> Redux Toolkit</span>, and working with 
                   <span className="font-semibold text-orange-600"> live APIs</span>. It is inspired by modern food delivery 
                   apps like Swiggy and Zomato.
                 </p>
-
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-6">
                   This platform allows users to browse restaurants, search by location, filter by ratings, 
                   and explore restaurant menus - all powered by real-time data from Swiggy API.
                 </p>
-
-                {/* Tech Stack */}
                 <div className="mb-4">
                   <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-3">Tech Stack</h4>
                   <div className="flex flex-wrap gap-2">
@@ -105,8 +57,6 @@ class About extends React.Component{
               </div>
             </div>
           </div>
-
-          {/* Footer CTA */}
           <div className="bg-orange-600 rounded-2xl shadow-2xl p-6 sm:p-8 text-center text-white">
             <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Let's Connect!</h3>
             <p className="text-sm sm:text-base text-orange-100 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
@@ -118,8 +68,7 @@ class About extends React.Component{
                 href="https://github.com/ashishxdev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white text-orange-600 font-semibold py-3 px-6 sm:px-8 rounded-lg hover:bg-orange-50 transition-colors duration-200 shadow-lg"
-              >
+                className="bg-white text-orange-600 font-semibold py-3 px-6 sm:px-8 rounded-lg hover:bg-orange-50 transition-colors duration-200 shadow-lg">
                 GitHub Profile
               </a>
               <a

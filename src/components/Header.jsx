@@ -183,7 +183,6 @@ const Header = () => {
               Cart ({cartItems.length})
             </Link>
 
-            {/* Mobile Login/Logout */}
             <div className="px-4 py-2 border-t border-gray-200 mt-2 pt-4">
               {isLoggedIn ? (
                 <div className="space-y-3">

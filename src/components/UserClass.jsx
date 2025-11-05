@@ -48,8 +48,6 @@ class UserClass extends React.Component{
     render(){
         const { name, login, bio, location, avatar_url, public_repos, followers, following, html_url, company, blog } = this.state.userinfo;
         const { isLoading, error } = this.state;
-
-        // Loading State
         if (isLoading) {
             return (
                 <div className="bg-white rounded-2xl shadow-xl p-6 text-center">
@@ -62,8 +60,6 @@ class UserClass extends React.Component{
                 </div>
             );
         }
-
-        // Error State
         if (error) {
             return (
                 <div className="bg-white rounded-2xl shadow-xl p-6 text-center">
@@ -78,10 +74,8 @@ class UserClass extends React.Component{
             );
         }
 
-        // Success State - Profile Card
         return (
             <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300">
-                {/* Profile Image */}
                 <div className="relative inline-block mb-4 w-full">
                     <img 
                         src={avatar_url || "https://via.placeholder.com/150"} 
@@ -90,8 +84,7 @@ class UserClass extends React.Component{
                     />
                     <div className="absolute bottom-0 right-1/2 translate-x-12 sm:translate-x-16 w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full border-4 border-white"></div>
                 </div>
-                
-                {/* Name and Username */}
+
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1 text-center break-words">{name}</h2>
                 <a 
                     href={html_url}
@@ -102,7 +95,6 @@ class UserClass extends React.Component{
                     @{login}
                 </a>
 
-                {/* Location */}
                 <div className="flex items-center justify-center gap-2 text-gray-600 mb-4">
                     <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
@@ -110,14 +102,11 @@ class UserClass extends React.Component{
                     <span className="text-sm sm:text-base">{location || this.props.location || "India"}</span>
                 </div>
 
-                {/* Bio */}
                 {bio && (
                     <p className="text-gray-600 text-xs sm:text-sm mb-4 sm:mb-6 italic text-center px-2">
                         {bio}
                     </p>
                 )}
-
-                {/* Company and Blog */}
                 {(company || blog) && (
                     <div className="mb-4 sm:mb-6 space-y-2">
                         {company && (
@@ -145,8 +134,6 @@ class UserClass extends React.Component{
                         )}
                     </div>
                 )}
-
-                {/* GitHub Stats */}
                 <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
                     <div className="bg-orange-50 rounded-lg p-2 sm:p-3">
                         <div className="text-lg sm:text-2xl font-bold text-orange-600">{public_repos}</div>
@@ -161,8 +148,6 @@ class UserClass extends React.Component{
                         <div className="text-xs text-gray-600">Following</div>
                     </div>
                 </div>
-
-                {/* GitHub Profile Button */}
                 <a
                     href={html_url}
                     target="_blank"

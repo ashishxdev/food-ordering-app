@@ -1,10 +1,11 @@
 import RestaurantCard from "./RestaurantCard";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import { withVegLabel } from "./RestaurantCard";
 import UserContext from "../utils/UserContext";
+import { SWIGGY_DIRECT_API } from "../utils/constant";
 
 const Body = () => {
     const [listofRestaurants, setlistofRestaurants] = useState([]);
@@ -16,6 +17,8 @@ const Body = () => {
     const [location, setLocation] = useState({ lat: 28.7041, lng: 77.1025, name: "Delhi" });
     const [customCity, setCustomCity] = useState("");
     const [isSearchingLocation, setIsSearchingLocation] = useState(false);
+    const activeAbortControllerRef = useRef(null);
+    const activeRequestIdRef = useRef(0);
     
     const popularLocations = [
         { lat: 21.1458, lng: 79.0882, name: "Nagpur" },
@@ -32,10 +35,27 @@ const Body = () => {
     const RestaurantCardVeg = withVegLabel(RestaurantCard);
 
     useEffect(() => {
+        // cancel any in-flight request for previous location
+        if (activeAbortControllerRef.current) {
+            try { activeAbortControllerRef.current.abort(); } catch (_) {}
+        }
+        // bump request id so late responses are ignored
+        activeRequestIdRef.current += 1;
+        const requestId = activeRequestIdRef.current;
+
+        // reset lists and search when location changes
         setlistofRestaurants([]);
         setFilteredRestaurants([]);
+        setsearchText("");
         setCurrentBatchIndex(0);
-        fetchRestaurants();
+        fetchRestaurants(0, requestId);
+
+        return () => {
+            // ensure request is aborted on unmount or before next effect run
+            if (activeAbortControllerRef.current) {
+                try { activeAbortControllerRef.current.abort(); } catch (_) {}
+            }
+        };
     }, [location]);
 
     const useCurrentLocation = () => {
@@ -90,19 +110,46 @@ const Body = () => {
         }
     };
 
-    const fetchRestaurants = async(batchIndex = 0) => {
+    const fetchRestaurants = async(batchIndex = 0, requestId = activeRequestIdRef.current) => {
         try {
             setIsLoading(true);
             
             const sortBy = sortOptions[batchIndex] || '';
-            let url = `/api/swiggy?lat=${location.lat}&lng=${location.lng}`;
+            const apiBaseOverride = (typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost')
+                ? (localStorage.getItem('apiBase') || '')
+                : '';
+            let urlProxy = `${apiBaseOverride}/api/swiggy?lat=${location.lat}&lng=${location.lng}`;
             if (sortBy) {
-                url += `&sortBy=${sortBy}`;
+                urlProxy += `&sortBy=${sortBy}`;
             }
-            
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('Failed to fetch restaurants');
+
+            const directParams = `lat=${location.lat}&lng=${location.lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING${sortBy ? `&sortBy=${sortBy}` : ''}`;
+            const urlDirect = `${SWIGGY_DIRECT_API}?${directParams}`;
+
+            const abortController = new AbortController();
+            activeAbortControllerRef.current = abortController;
+            // Try proxy first; if it fails in dev, fallback to direct API
+            let response;
+            try {
+                response = await fetch(urlProxy, { signal: abortController.signal });
+                if (!response.ok) {
+                    throw new Error('Proxy fetch failed');
+                }
+                const ct = response.headers.get('content-type') || '';
+                if (!ct.includes('application/json')) {
+                    throw new Error('Proxy returned non-JSON');
+                }
+            } catch (proxyErr) {
+                // If request was aborted, rethrow to be handled below
+                if (proxyErr && proxyErr.name === 'AbortError') throw proxyErr;
+                response = await fetch(urlDirect, { signal: abortController.signal });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch restaurants');
+                }
+                const ct2 = response.headers.get('content-type') || '';
+                if (!ct2.includes('application/json')) {
+                    throw new Error('Direct API returned non-JSON');
+                }
             }
 
             const json = await response.json();
@@ -112,6 +159,11 @@ const Body = () => {
             
             const newRestaurants = restaurantsCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
             
+            // ignore late/stale responses
+            if (requestId !== activeRequestIdRef.current) {
+                return;
+            }
+
             if (batchIndex === 0) {
                 setlistofRestaurants(newRestaurants);
                 setFilteredRestaurants(newRestaurants);
@@ -127,11 +179,20 @@ const Body = () => {
                     return [...prev, ...uniqueNew];
                 });
             }
-            
+
             setIsLoading(false);
         } catch (err) {
+            if (err && err.name === 'AbortError') {
+                return;
+            }
             console.error('Error fetching restaurants:', err);
-            setIsLoading(false);
+            // only update loading if this is the active request
+            if (requestId === activeRequestIdRef.current) {
+                setIsLoading(false);
+                if (typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost') {
+                    alert('Failed to load restaurants locally. Set localStorage.apiBase to your deployed domain (e.g., https://your-app.vercel.app) and reload.');
+                }
+            }
         }
     };
 
@@ -139,7 +200,7 @@ const Body = () => {
         const nextBatch = currentBatchIndex + 1;
         if (nextBatch < sortOptions.length) {
             setCurrentBatchIndex(nextBatch);
-            fetchRestaurants(nextBatch);
+            fetchRestaurants(nextBatch, activeRequestIdRef.current);
         }
     };
 
@@ -154,13 +215,13 @@ const Body = () => {
     const hasMoreToLoad = currentBatchIndex < sortOptions.length - 1;
 
     return listofRestaurants.length == 0 && isLoading ? <Shimmer /> : (
-        <div className="body px-6 py-4 bg-gray-50 min-h-screen">
-            <div className="filter flex flex-wrap justify-between items-center bg-white shadow-md rounded-xl px-4 py-0 m-0 mb-6">
+        <div className="body px-4 sm:px-6 py-4 bg-gray-50 min-h-screen">
+            <div className="filter flex flex-col md:flex-row md:flex-wrap gap-3 md:gap-2 justify-between items-stretch md:items-center bg-white shadow-md rounded-xl px-3 sm:px-4 py-3 m-0 mb-6">
                 
-                <div className="search m-2 flex items-center gap-2">
+                <div className="search m-0 md:m-2 flex items-center gap-2">
                     <label className="font-medium text-gray-700">📍 Popular: </label>
                     <select 
-                        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 w-full sm:w-auto"
                         value={popularLocations.findIndex(loc => loc.name === location.name)}
                         onChange={(e) => {
                             const selected = popularLocations[e.target.value];
@@ -173,11 +234,11 @@ const Body = () => {
                     </select>
                 </div>
 
-                <div className="search m-2 flex items-center gap-2">
+                <div className="search m-0 md:m-2 flex items-center gap-2">
                     <input 
                         type="text" 
                         placeholder="Enter any city..."
-                        className="border border-gray-300 rounded-lg px-3 py-2 w-40 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="border border-gray-300 rounded-lg px-3 py-2 w-full sm:w-48 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         value={customCity}
                         onChange={(e) => setCustomCity(e.target.value)}
                         onKeyPress={(e) => {
@@ -185,7 +246,7 @@ const Body = () => {
                         }}
                     />
                     <button 
-                        className="px-4 py-2 bg-orange-300 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200"
+                        className="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors duration-200 w-auto"
                         onClick={searchCustomLocation}
                         disabled={isSearchingLocation}
                     >
@@ -193,7 +254,7 @@ const Body = () => {
                     </button>
                 </div>
 
-                <div className="search m-2">
+                <div className="search m-0 md:m-2">
                     <button 
                         className="px-4 py-2 bg-purple-500 text-white font-medium rounded-lg hover:bg-purple-600 transition-colors duration-200 flex items-center gap-2"
                         onClick={useCurrentLocation}
@@ -203,12 +264,12 @@ const Body = () => {
                     </button>
                 </div>
 
-                <div className="search flex items-center gap-2 m-2">
+                <div className="search flex items-center gap-2 m-0 md:m-2">
                     <input 
                         type="text" 
                         data-testid="searchInput"
                         placeholder="Search restaurants..."
-                        className="border border-gray-300 rounded-lg px-4 py-2 w-60 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                        className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-orange-400" 
                         value={searchtext}
                         onChange={(e) => {
                             setsearchText(e.target.value);
@@ -242,15 +303,15 @@ const Body = () => {
                 </div>
             </div>
 
-            <div className="text-center mb-4">
+            <div className="text-center mb-4 px-1">
                 <p className="text-gray-600">
                     📍 Showing restaurants in <span className="font-semibold text-orange-600">{location.name}</span>
                 </p>
             </div>
 
-            <div className="flex flex-wrap gap-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                 {FilteredRestaurants.map((restaurant) => (
-                    <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+                    <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id} className="block h-full">
                         {restaurant.info.veg ? (
                             <RestaurantCardVeg resData={restaurant}/>
                         ) : (
