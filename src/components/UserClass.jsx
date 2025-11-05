@@ -1,49 +1,3 @@
-// import React from 'react'
-
-// class UserClass extends React.Component{
-//     constructor(props){
-//         super(props);
-//         this.state = {
-//             userinfo: {
-//                 name: "Dummy",
-//                 location: "Default"
-//             }
-//         }
-//     }
-
-//     async componentDidMount(){
-//         // Api call
-//         const data = await fetch("https://api.github.com/users/ashishxdev")
-//         const json = await data.json();
-//         // console.log(json)
-
-//         this.setState({
-//             userinfo: json,
-//         })
-//     }
-
-//     componentDidUpdate(){
-//         // console.log("Component did Update")
-//     }
-
-//     componentWillUnmount(){
-//         // console.log("Component did unmount")
-//     }
-    
-//     render(){
-//         const { name, location, avatar_url} = this.state.userinfo;
-//         return (
-//         <div className="user-card">
-//             <img src={avatar_url} />
-//             <h2>Name: {name}</h2>
-//             <h3>Location: {location}</h3>
-//             <h4>Contact: @ashishrana2004</h4>
-//         </div>)
-//     }
-// }
-
-// export default UserClass
-
 import React from 'react'
 
 class UserClass extends React.Component{
@@ -213,7 +167,7 @@ class UserClass extends React.Component{
                     href={html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full inline-block bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-md hover:shadow-lg text-center text-sm sm:text-base"
+                    className="w-full inline-block bg-orange-600 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-md hover:shadow-lg text-center text-sm sm:text-base"
                 >
                     View GitHub Profile →
                 </a>
