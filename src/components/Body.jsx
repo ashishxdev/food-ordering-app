@@ -108,6 +108,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
 import { withVegLabel } from "./RestaurantCard";
 import UserContext from "../utils/UserContext";
 
+
 const Body = () => {
     const [listofRestaurants, setlistofRestaurants] = useState([]);
     const [FilteredRestaurants, setFilteredRestaurants] = useState([]);
@@ -206,3 +207,4 @@ const Body = () => {
 }
 
 export default Body;
+
