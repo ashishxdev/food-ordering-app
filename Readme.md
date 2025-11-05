@@ -48,10 +48,6 @@ A modern, feature-rich food ordering web application inspired by Swiggy. Built w
    npm run build
    ```
 
-6. CORS Note
-If you’re testing locally or using my link, make sure to install the “Allow CORS: Access-Control-Allow-Origin” Chrome extension and turn it ON.
-This helps bypass CORS restrictions during local development.
-
 ## 🌐 Live Demo
 
 Check out the live application: [**Food Order App on Vercel**](https://food-ordering-app-git-main-aashishrana2004s-projects.vercel.app/)
