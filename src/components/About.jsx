@@ -72,7 +72,7 @@ class About extends React.Component{
                 GitHub Profile
               </a>
               <a
-                href="mailto:ashishrana2004@gmail.com"
+                href="mailto:aashishrana.tech@gmail.com"
                 className="bg-white text-orange-600 font-semibold py-3 px-6 sm:px-8 rounded-lg hover:bg-orange-50 shadow-lg"
               >
                 Contact Me
