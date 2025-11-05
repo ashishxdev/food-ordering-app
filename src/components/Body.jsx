@@ -35,15 +35,11 @@ const Body = () => {
     const RestaurantCardVeg = withVegLabel(RestaurantCard);
 
     useEffect(() => {
-        // cancel any in-flight request for previous location
         if (activeAbortControllerRef.current) {
             try { activeAbortControllerRef.current.abort(); } catch (_) {}
         }
-        // bump request id so late responses are ignored
         activeRequestIdRef.current += 1;
         const requestId = activeRequestIdRef.current;
-
-        // reset lists and search when location changes
         setlistofRestaurants([]);
         setFilteredRestaurants([]);
         setsearchText("");
@@ -51,7 +47,6 @@ const Body = () => {
         fetchRestaurants(0, requestId);
 
         return () => {
-            // ensure request is aborted on unmount or before next effect run
             if (activeAbortControllerRef.current) {
                 try { activeAbortControllerRef.current.abort(); } catch (_) {}
             }
@@ -128,7 +123,6 @@ const Body = () => {
 
             const abortController = new AbortController();
             activeAbortControllerRef.current = abortController;
-            // Try proxy first; if it fails in dev, fallback to direct API
             let response;
             try {
                 response = await fetch(urlProxy, { signal: abortController.signal });
@@ -140,7 +134,6 @@ const Body = () => {
                     throw new Error('Proxy returned non-JSON');
                 }
             } catch (proxyErr) {
-                // If request was aborted, rethrow to be handled below
                 if (proxyErr && proxyErr.name === 'AbortError') throw proxyErr;
                 response = await fetch(urlDirect, { signal: abortController.signal });
                 if (!response.ok) {
@@ -159,7 +152,6 @@ const Body = () => {
             
             const newRestaurants = restaurantsCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
             
-            // ignore late/stale responses
             if (requestId !== activeRequestIdRef.current) {
                 return;
             }
@@ -186,7 +178,6 @@ const Body = () => {
                 return;
             }
             console.error('Error fetching restaurants:', err);
-            // only update loading if this is the active request
             if (requestId === activeRequestIdRef.current) {
                 setIsLoading(false);
                 if (typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost') {

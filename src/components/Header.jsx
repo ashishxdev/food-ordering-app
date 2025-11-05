@@ -97,7 +97,7 @@ const Header = () => {
                 </>
               ) : (
                 <button
-                  className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-semibold shadow-md"
+                  className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-semibold shadow-md"
                   onClick={() => setbtnNameReact("Logout")}
                 >
                   Login
@@ -204,7 +204,7 @@ const Header = () => {
                 </div>
               ) : (
                 <button
-                  className="w-full px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-semibold"
+                  className="w-full px-4 py-2 bg-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-200 font-semibold"
                   onClick={() => {
                     setbtnNameReact("Logout");
                     setIsMobileMenuOpen(false);
