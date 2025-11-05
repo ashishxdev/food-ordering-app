@@ -14,8 +14,8 @@ const RestaurantCard = (props) => {
     return (
         <div 
         data-testid = "resCard"
-        className="m-4 w-[240px] bg-white rounded-2xl shadow-md hover:shadow-lg hover:bg-gray-200 transition-all duration-300 cursor-pointer">
-            <img className="rounded-t-2xl w-full object-cover p-0 h-[250px]" alt="res-logo" src={CDN_URL + resData.info.cloudinaryImageId}/>
+        className="m-3 sm:m-4 w-full sm:w-[240px] bg-white rounded-2xl shadow-md hover:shadow-lg hover:bg-gray-200 transition-all duration-300 cursor-pointer">
+            <img className="rounded-t-2xl w-full object-cover p-0 h-40 sm:h-[250px]" alt="res-logo" src={CDN_URL + resData.info.cloudinaryImageId}/>
 
             <div className="p-4">
             <h3 className="font-semibold text-lg text-gray-800 truncate">{name}</h3>

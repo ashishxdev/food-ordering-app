@@ -22,9 +22,11 @@ const RestaurantMenu = () => {
     const categories = resinfo?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c=> c.card?.["card"]?.["@type"] == "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory")
 
     return (
-    <div className='text-center'>
-      <h1 className='font-bold my-6 text-2xl'>{name}</h1>
-      <p className='font-bold text-lg'>{cuisines.join(", ")} - Rs.{costForTwoMessage}</p>
+    <div className='px-3 sm:px-4 py-4'>
+      <div className='max-w-2xl sm:max-w-3xl mx-auto text-center'>
+        <h1 className='font-bold my-4 sm:my-6 text-2xl sm:text-3xl'>{name}</h1>
+        <p className='font-semibold text-base sm:text-lg text-gray-700'>{cuisines.join(", ")} - {costForTwoMessage}</p>
+      </div>
 
       {categories.map((category, index)=>
         <RestaurantCategory 
