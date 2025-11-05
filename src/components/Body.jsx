@@ -455,7 +455,7 @@ const Body = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [currentBatchIndex, setCurrentBatchIndex] = useState(0);
     
-    const [location, setLocation] = useState({ lat: 21.1458, lng: 79.0882, name: "Nagpur" });
+    const [location, setLocation] = useState({ lat: 28.7041, lng: 77.1025, name: "Delhi" });
     const [customCity, setCustomCity] = useState("");
     const [isSearchingLocation, setIsSearchingLocation] = useState(false);
     
