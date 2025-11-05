@@ -31,7 +31,6 @@ class UserClass extends React.Component{
     }
     
     render(){
-        // De-structuring
         const { name, location, avatar_url} = this.state.userinfo;
         return (
         <div className="user-card">
